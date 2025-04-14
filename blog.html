@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ancient Scrolls - Thomas Machingaidze</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Forum&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* --- THEME VARIABLES (Greek Theme ONLY) --- */
+        :root {
+            --primary-bg: #F8F4E3;
+            /* Light Cream/Beige */
+            --secondary-bg: #396870;
+            /* Teal/Blue-Green */
+            --accent-primary: #C1A073;
+            /* Wood Brown/Tan */
+            --accent-secondary: #E0DBCB;
+            /* Darker Cream/Subtle Accent */
+            --text-dark: #1A1A1A;
+            /* Near Black */
+            --text-light: #F8F4E3;
+            /* Light Cream/Beige (same as primary bg) */
+            --border-color: rgba(26, 26, 26, 0.15);
+            /* Subtle dark border */
+
+            /* Fonts */
+            --font-heading: 'Cinzel Decorative', cursive;
+            --font-body: 'Forum', cursive;
+            --border-radius: 6px;
+            /* Slightly adjusted for modern feel */
+        }
+
+        /* --- Global & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            background-color: var(--primary-bg);
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-body-color);
+            line-height: 1.6;
+            background-color: var(--primary-bg);
+            /* Removed overflow: hidden; */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--font-heading);
+            color: var(--text-heading-color);
+            margin-bottom: 1rem;
+            font-weight: normal;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            padding: 1.5rem 0;
+            color: var(--accent-1);
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            color: var(--secondary-bg);
+            margin-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            color: var(--accent-2);
+            margin-bottom: 0.8rem;
+            font-weight: bold;
+        }
+
+        p {
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+
+        a {
+            color: var(--text-link-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--text-link-hover);
+        }
+
+        /* --- Blog Header --- */
+        .blog-header {
+            background: var(--secondary-bg);
+            color: var(--text-light);
+            padding: 0.5rem 0;
+            border-bottom: 3px solid var(--accent-primary);
+            flex-shrink: 0;
+            /* Prevent header from shrinking */
+            position: sticky;
+            /* Make header sticky */
+            top: 0;
+            z-index: 10;
+            /* Ensure it's above content */
+        }
+
+        .blog-header .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .blog-header h1 {
+            font-size: 1.8rem;
+            padding: 0;
+            margin: 0;
+            color: var(--accent-1);
+        }
+
+        .blog-header a.back-link {
+            color: var(--text-light);
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            border: 1px solid var(--accent-1);
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .blog-header a.back-link:hover {
+            background-color: var(--accent-1);
+            color: var(--secondary-bg);
+        }
+
+        /* --- Blog Canvas (Grid Container) & Posts --- */
+        #blog-canvas {
+            flex-grow: 1;
+            /* Take remaining vertical space */
+            width: 100%;
+            max-width: 1200px;
+            /* Max width for the grid */
+            margin: 0 auto;
+            /* Center the grid container */
+            padding: 3rem 2rem;
+            /* Padding around the grid */
+            /* --- Grid Layout --- */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            /* Responsive columns */
+            gap: 2.5rem;
+            /* Space between grid items */
+            /* Removed position: relative and overflow: hidden */
+        }
+
+        .blog-post {
+            width: 100%;
+            /* Make width dynamic */
+            max-width: 400px;
+            /* Set a maximum width */
+            padding: 1.5rem 2rem;
+            /* Adjusted padding */
+            background: white;
+            border: 1px solid var(--card-border);
+            border-radius: 5%;
+            /* Circular borders */
+            box-shadow: 2px 2px 5px var(--card-shadow), inset 0 0 10px rgba(212, 175, 55, 0.1);
+            overflow: hidden;
+            /* Still needed to clip content/after */
+            user-select: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Added transition for hover */
+            position: relative;
+            /* Needed for ::after positioning */
+            display: flex;
+            /* Use flex to make link fill height */
+            flex-direction: column;
+        }
+
+        .blog-post img {
+            width: 100%;
+            height: auto;
+            /* Makes the height dynamic based on the image's aspect ratio */
+            object-fit: cover;
+            /* Ensures the image covers the area without distortion */
+            border-radius: 5%;
+            /* Matches the border radius of the card */
+            margin-bottom: 1rem;
+            /* Space between the image and the content */
+        }
+
+        .blog-post::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -5px;
+            right: -5px;
+            height: 15px;
+            background: linear-gradient(to right bottom, transparent 49%, var(--card-border) 50%) -5px 0 / 15px 15px repeat-x,
+                linear-gradient(to top, rgba(0, 0, 0, 0.05), transparent);
+            background-color: var(--card-bg);
+            /* Match background */
+            filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1));
+        }
+
+        /* Hover effect for static cards */
+        .blog-post:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .blog-post h2 {
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .blog-post .date {
+            font-size: 0.8rem;
+            color: #777;
+            font-style: italic;
+        }
+
+        .blog-post p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow: hidden;
+            /* Hide overflow content */
+            text-overflow: ellipsis;
+            /* Add ellipsis for overflow text */
+            margin-bottom: 0;
+            flex-grow: 1;
+            /* Allow paragraph to take space if needed */
+            max-height: 4.5rem;
+            /* Set a fixed height for the text box */
+            display: -webkit-box;
+            /* Use for multiline ellipsis */
+            -webkit-line-clamp: 3;
+            /* Limit to 3 lines */
+            -webkit-box-orient: vertical;
+            /* Set box orientation for ellipsis */
+        }
+
+        /* Link Styling (Covers the whole post) */
+        a.post-link {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            /* Use flex for link content */
+            flex-direction: column;
+            flex-grow: 1;
+            /* Make link fill parent flex container */
+            height: 100%;
+            /* Should fill the card */
+            outline: none;
+            /* overflow: hidden; */
+            /* Removed from link, handled by post */
+        }
+
+
+        /* Basic Responsiveness */
+        @media (max-width: 768px) {
+            .blog-header h1 {
+                font-size: 1.4rem;
+            }
+
+            .blog-header a.back-link {
+                font-size: 1rem;
+                padding: 4px 8px;
+            }
+
+            #blog-canvas {
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                /* Adjust minmax */
+                gap: 1.5rem;
+                padding: 2rem 1rem;
+            }
+
+            .blog-post {
+                padding: 1.2rem 1.5rem 2rem 1.2rem;
+                min-height: 200px;
+            }
+
+            .blog-post h2 {
+                font-size: 1.2rem;
+            }
+
+            .blog-post p {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .blog-header .container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            #blog-canvas {
+                grid-template-columns: 1fr;
+                /* Single column */
+                padding: 1.5rem 1rem;
+            }
+
+            .blog-post {
+                min-height: 180px;
+                padding: 1rem 1.2rem 1.8rem 1rem;
+            }
+
+            .blog-post h2 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="blog-header">
+        <div class="container">
+            <h1>Ancient Scrolls</h1>
+            <a href="index.html" class="back-link">&laquo; Return to Portfolio</a>
+        </div>
+    </header>
+
+    <div id="blog-canvas">
+        <div class="blog-post" id="post1">
+            <a href="post-detail.html?post=agi-race" class="post-link">
+                <h2>The AGI Sprint: Are We Racing Towards Utopia or Oblivion?</h2>
+                <img src="/assets/agi-backdrop.png" alt="Blog Post Image 1" class="blog-post-image">
+                <p class="date">April 14, 2025</p>
+                <p>A look inside the global sprint to build Artificial General Intelligence. What is AGI, why the rush,
+                    and what does it mean for humanity's future?</p>
+            </a>
+        </div>
+    </div>
+
+</body>
+
+</html>

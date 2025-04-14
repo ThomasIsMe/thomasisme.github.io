@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thomas Machingaidze - Modern Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Forum&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* --- Global Styles & Variables (NEW Theme based on Image) --- */
+        :root {
+            /* Color Palette from Image */
+            --primary-bg: #F8F4E3;
+            /* Light Cream/Beige */
+            --secondary-bg: #396870;
+            /* Teal/Blue-Green */
+            --accent-primary: #C1A073;
+            /* Wood Brown/Tan */
+            --accent-secondary: #E0DBCB;
+            /* Darker Cream/Subtle Accent */
+            --text-dark: #1A1A1A;
+            /* Near Black */
+            --text-light: #F8F4E3;
+            /* Light Cream/Beige (same as primary bg) */
+            --border-color: rgba(26, 26, 26, 0.15);
+            /* Subtle dark border */
+
+            /* Fonts (Kept original as requested) */
+            --font-heading: 'Cinzel Decorative', cursive;
+            --font-body: 'Forum', cursive;
+            --border-radius: 6px;
+            /* Slightly adjusted for modern feel */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            /* NEW: Enable scroll snapping */
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            /* Ensure scrolling is enabled */
+            background-color: var(--primary-bg);
+            /* Base background */
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            /* Default text color */
+            line-height: 1.7;
+            background-color: transparent;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            width: 100%;
+            /* Ensure container takes width within flex sections */
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: var(--font-heading);
+            /* Default heading color - will be overridden per section */
+            color: var(--secondary-bg);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 1.6rem;
+            font-family: var(--font-body);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        a {
+            color: var(--accent-primary);
+            /* Use wood brown for links */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--secondary-bg);
+            /* Teal hover for links on light background */
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- Section Styling (Full Height & Centering) --- */
+        section {
+            /* NEW: Full viewport height */
+            height: 100vh;
+            /* NEW: Flexbox for centering content */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* NEW: Scroll snap alignment */
+            scroll-snap-align: start;
+
+            padding: 4rem 0;
+            /* Adjusted padding */
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* Section Backgrounds & Text Colors */
+        #hero {
+            background-color: var(--secondary-bg);
+            /* Teal */
+            color: var(--text-light);
+            /* Cream text */
+        }
+
+        #about {
+            background-color: var(--primary-bg);
+            /* Cream */
+            color: var(--text-dark);
+            /* Black text */
+        }
+
+        #skills {
+            background-color: var(--secondary-bg);
+            /* Teal */
+            color: var(--text-light);
+            /* Cream text */
+        }
+
+        #portfolio {
+            background-color: var(--primary-bg);
+            /* Cream */
+            color: var(--text-dark);
+            /* Black text */
+        }
+
+        #contact {
+            background-color: var(--secondary-bg);
+            /* Teal */
+            color: var(--text-light);
+            /* Cream text */
+        }
+
+        /* --- Header --- */
+        header {
+            background: var(--secondary-bg);
+            /* Teal */
+            color: var(--text-light);
+            /* Cream Text */
+            padding: 0.8rem 0;
+            position: sticky;
+            /* Keep sticky */
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            border-bottom: 3px solid var(--accent-primary);
+            /* Wood Brown Border */
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .logo {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            /* Wood Brown Logo */
+            letter-spacing: 1.5px;
+        }
+
+        header nav ul {
+            display: flex;
+        }
+
+        header nav ul li {
+            margin-left: 2rem;
+        }
+
+        header nav ul li a {
+            color: var(--text-light);
+            /* Cream Links */
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding-bottom: 5px;
+            border-bottom: 3px solid transparent;
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+        }
+
+        header nav ul li a:hover,
+        header nav ul li a.active {
+            color: var(--accent-primary);
+            /* Wood Brown Hover/Active */
+            border-bottom-color: var(--accent-primary);
+        }
+
+        /* --- Hero Section --- */
+        #hero {
+            /* height: 100vh; Already set by general section rule */
+            text-align: center;
+            padding: 0;
+            /* Override general section padding */
+            /* background-color: var(--secondary-bg); Already set */
+            color: var(--text-light);
+            /* Already set */
+        }
+
+        #hero::before {
+            /* Background Layer */
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* UPDATE: Simplified overlay, kept placeholder image. Replace URL if needed. */
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1518005020951-eccb494ad742?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+            background-size: cover;
+            /* background-attachment: fixed; Consider removing if it causes issues with snapping */
+            z-index: -1;
+        }
+
+        #hero .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            /* Ensure container fills hero */
+        }
+
+        #hero h1 {
+            color: var(--text-light);
+            /* Cream Heading */
+            font-size: 4.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        #hero .subtitle {
+            font-size: 1.8rem;
+            margin-top: 1rem;
+            color: var(--text-light);
+            /* Cream Subtitle */
+            font-family: var(--font-body);
+            font-weight: bold;
+            min-height: 2.5rem;
+            display: inline-block;
+        }
+
+        .subtitle .cursor {
+            display: inline-block;
+            background-color: var(--accent-primary);
+            margin-left: 0.1rem;
+            width: 3px;
+            animation: blink 1s infinite;
+            position: relative;
+            bottom: -3px;
+        }
+
+        .subtitle .cursor.typing {
+            animation: none;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        #hero .hero-icon {
+            width: 70px;
+            height: 70px;
+            margin-top: 1.5rem;
+            margin-bottom: 2rem;
+            fill: var(--text-light);
+            /* Cream Icon */
+            opacity: 0.9;
+        }
+
+        .hero-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- About Section --- */
+        #about {
+            /* background: ... ; Removed complex SVG bg, color set above */
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #about h2,
+        #about h3,
+        #about h4 {
+            color: var(--secondary-bg);
+        }
+
+        /* Teal headings on Cream bg */
+        #about a:hover {
+            color: var(--text-dark);
+        }
+
+        /* Black hover on Cream bg */
+        #about .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            /* Center vertically too */
+        }
+
+        #about .about-text {
+            padding-right: 2rem;
+        }
+
+        #about h2 {
+            text-align: left;
+        }
+
+        #about .about-artifacts {
+            text-align: center;
+        }
+
+        #about .artifact {
+            margin-bottom: 2rem;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        #about .artifact:hover {
+            transform: scale(1.1);
+        }
+
+        #about .artifact-icon svg {
+            width: 80px;
+            height: 80px;
+            fill: var(--secondary-bg);
+            /* Teal icons on Cream bg */
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        #about .artifact-desc {
+            display: none;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--accent-primary);
+            max-width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #about .artifact.active .artifact-desc {
+            display: block;
+        }
+
+        /* --- Skills Section --- */
+        #skills {
+            /* background: var(--secondary-bg); Color set above */
+            position: relative;
+        }
+
+        /* Optional: Remove faint lines if they clash */
+        /* #skills::before, #skills::after { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 80%; height: 1px; background: linear-gradient(to right, transparent, var(--border-color), transparent); }
+        #skills::before { top: 2rem; } #skills::after { bottom: 2rem; } */
+
+        /* Headings on dark (Teal) background */
+        #skills h2,
+        #skills h3 {
+            color: var(--text-light);
+        }
+
+        #skills a:hover {
+            color: var(--accent-secondary);
+        }
+
+        /* Lighter cream hover */
+
+        #skills h2 {
+            margin-bottom: 3rem;
+        }
+
+        /* Reduced margin */
+        #skills .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        #skills .skill-item {
+            background: rgba(255, 255, 255, 0.05);
+            /* Subtle transparency on Teal */
+            color: var(--text-light);
+            /* Cream text inside item */
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(248, 243, 227, 0.2);
+            /* Lighter border */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.4s ease, background-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-top: 4px solid var(--accent-primary);
+            /* Wood brown top border */
+        }
+
+        #skills .skill-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            /* Slightly lighter on hover */
+        }
+
+        #skills .skill-icon svg {
+            width: 60px;
+            height: 60px;
+            fill: var(--accent-primary);
+            /* Wood Brown Icon */
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        #skills .skill-item:hover .skill-icon svg {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        #skills .skill-item h3 {
+            margin-bottom: 0.8rem;
+            /* color already set */
+        }
+
+        .myth-button-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .myth-button {
+            /* Button on Teal bg */
+            display: inline-block;
+            background: var(--accent-primary);
+            /* Wood Brown background */
+            color: var(--text-dark);
+            /* Black text */
+            font-family: var(--font-heading);
+            padding: 1rem 2rem;
+            border: 2px solid var(--accent-primary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .myth-button:hover {
+            background: var(--accent-secondary);
+            /* Darker Cream hover */
+            color: var(--text-dark);
+            border-color: var(--accent-secondary);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .myth-button svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            margin-right: 10px;
+            vertical-align: middle;
+            position: relative;
+            bottom: 2px;
+        }
+
+        /* --- Portfolio Section --- */
+        #portfolio {
+            /* background: ... ; Removed complex SVG bg, color set above */
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Headings on light (Cream) background */
+        #portfolio h2,
+        #portfolio h3 {
+            color: var(--secondary-bg);
+        }
+
+        #portfolio a:hover {
+            color: var(--text-dark);
+        }
+
+        /* Black hover */
+
+        #portfolio h2 {
+            margin-bottom: 3rem;
+        }
+
+        /* Reduced margin */
+        #portfolio .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        /* Slightly reduced gap */
+        .portfolio-item {
+            background: #fff;
+            /* White card background for contrast on Cream */
+            color: var(--text-dark);
+            /* Black text inside */
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .portfolio-item::before {
+            /* Removed Greek key border */
+            content: none;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .portfolio-item img {
+            display: block;
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background-color: #eee;
+            transition: opacity 0.3s ease;
+        }
+
+        .portfolio-item:hover img {
+            opacity: 0.9;
+        }
+
+        .portfolio-content {
+            padding: 1.5rem 2rem;
+        }
+
+        .portfolio-content h3 {
+            margin-bottom: 0.5rem;
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            color: var(--secondary-bg);
+            /* Ensure teal heading */
+        }
+
+        .portfolio-content p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .portfolio-content a.button-link {
+            /* Style portfolio links like buttons */
+            display: inline-block;
+            background: var(--accent-primary);
+            /* Wood Brown */
+            color: var(--text-dark);
+            /* Black Text */
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border: 1px solid var(--accent-primary);
+        }
+
+        .portfolio-content a.button-link:hover {
+            background: var(--secondary-bg);
+            /* Teal Hover */
+            border-color: var(--secondary-bg);
+            color: var(--text-light);
+            /* Cream Text */
+        }
+
+        /* --- Contact Section --- */
+        #contact {
+            /* background: var(--secondary-bg); Color set above */
+            color: var(--text-light);
+            /* Cream Text */
+            /* Removed border-image */
+            border-top: 1px solid rgba(248, 243, 227, 0.2);
+            /* Lighter border */
+        }
+
+        /* Headings on dark (Teal) background */
+        #contact h2 {
+            color: var(--text-light);
+            margin-bottom: 3rem;
+        }
+
+        #contact p {
+            color: var(--accent-secondary);
+        }
+
+        /* Darker cream for text */
+        #contact a {
+            color: var(--accent-primary);
+        }
+
+        /* Wood brown links */
+        #contact a:hover {
+            color: var(--text-light);
+        }
+
+        /* Cream hover */
+
+        #contact .contact-content {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        #contact .contact-details {
+            margin-bottom: 3rem;
+        }
+
+        #contact .contact-details p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        #contact .contact-details strong {
+            color: var(--text-light);
+            font-weight: bold;
+        }
+
+        /* Cream for strong text */
+        #contact .social-links a {
+            color: var(--text-light);
+            /* Cream icons */
+            margin: 0 1rem;
+            font-size: 1.8rem;
+            /* Slightly smaller */
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+
+        #contact .social-links a:hover {
+            color: var(--accent-primary);
+            /* Wood brown hover */
+            transform: scale(1.15);
+            /* Slightly more pop */
+        }
+
+        #contact .social-links svg {
+            width: 30px;
+            height: 30px;
+            fill: currentColor;
+            vertical-align: middle;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 2.5rem 0;
+            /* Adjusted padding */
+            background: var(--text-dark);
+            /* Near Black Footer BG */
+            color: rgba(248, 243, 227, 0.6);
+            /* Dim Cream Text */
+            font-size: 0.95rem;
+            /* Slightly smaller */
+            font-family: var(--font-body);
+            position: relative;
+            /* NEW: Add scroll snap align to prevent footer interfering */
+            scroll-snap-align: start;
+        }
+
+        footer::before {
+            /* Removed greek key mask border */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            /* Simple line */
+            background-color: var(--accent-primary);
+            /* Wood brown line */
+            opacity: 0.8;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        footer a {
+            color: var(--accent-secondary);
+        }
+
+        /* Dark cream links in footer */
+        footer a:hover {
+            color: var(--text-light);
+        }
+
+        /* Brighter cream hover */
+
+
+        /* --- Myth Modal Styles (Updated Colors) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(57, 104, 112, 0.8);
+            /* Teal overlay */
+            z-index: 1001;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%) scale(0.9);
+            background: var(--primary-bg);
+            /* Cream background */
+            /* Removed SVG background */
+            padding: 3rem 4rem;
+            border-radius: var(--border-radius);
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--accent-primary);
+            /* Wood brown border */
+            opacity: 0;
+            transition: transform 0.4s ease 0.1s, opacity 0.4s ease 0.1s;
+            /* Added slight delay */
+            color: var(--text-dark);
+            /* Black text */
+            text-align: center;
+        }
+
+        .modal-overlay.visible .modal-content {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .modal-content h3 {
+            color: var(--secondary-bg);
+            margin-bottom: 1.5rem;
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+        }
+
+        /* Teal Heading */
+        .modal-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            font-family: var(--font-body);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary-bg);
+            /* Teal close button */
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: var(--accent-primary);
+            transform: rotate(90deg);
+        }
+
+        /* Wood brown hover */
+
+        /* === SCROLL ANIMATION CSS (Kept for content inside sections) === */
+        .scroll-animate {
+            opacity: 0;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .scroll-animate.animate-fade-up {
+            transform: translateY(50px);
+        }
+
+        .scroll-animate.animate-fade-in {}
+
+        .scroll-animate.animate-slide-in-left {
+            transform: translateX(-100px);
+        }
+
+        .scroll-animate.animate-slide-in-right {
+            transform: translateX(100px);
+        }
+
+        .scroll-animate.animate-zoom-in {
+            transform: scale(0.9);
+        }
+
+        /* Staggered Grid Items (apply to elements within sections) */
+        section.visible .skills-grid .skill-item,
+        section.visible .portfolio-grid .portfolio-item {
+            opacity: 0;
+            /* Start hidden */
+            transform: translateY(30px);
+            /* Start slightly down */
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition-delay: calc(0.1s * var(--animation-order, 0));
+            /* Stagger effect */
+        }
+
+        section.visible .skills-grid.visible .skill-item,
+        section.visible .portfolio-grid.visible .portfolio-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* === END SCROLL ANIMATION CSS === */
+
+
+        /* --- Responsiveness --- */
+        @media (max-width: 992px) {
+            /* Adjust section height for tablets if 100vh feels too long */
+            /* section { height: auto; min-height: 80vh; } */
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 0 1.5rem;
+            }
+
+            h1 {
+                font-size: 2.8rem;
+            }
+
+            #hero h1 {
+                font-size: 3rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            header nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+                padding-left: 0;
+            }
+
+            header nav ul li {
+                margin: 0 1rem;
+            }
+
+            /* IMPORTANT: Disable scroll snapping on mobile? Or adjust section height? */
+            /* html { scroll-snap-type: none; } */
+            section {
+                height: auto;
+                /* Disable fixed height */
+                min-height: 80vh;
+                /* Ensure decent height */
+                padding: 5rem 0;
+                /* Restore more padding */
+                scroll-snap-align: none;
+                /* Disable snapping per section */
+            }
+
+            #hero {
+                height: 90vh;
+                scroll-snap-align: start;
+            }
+
+            /* Keep hero snap */
+
+
+            #about .container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            #about .about-text {
+                padding-right: 0;
+            }
+
+            #about h2 {
+                text-align: center;
+            }
+
+            #skills .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #portfolio .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 2.5rem 1.5rem;
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            #hero h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            header .logo {
+                font-size: 1.4rem;
+            }
+
+            header nav ul li {
+                margin: 0 0.5rem;
+            }
+
+            #hero .subtitle {
+                font-size: 1.5rem;
+            }
+
+            section {
+                min-height: 70vh;
+                padding: 4rem 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header id="main-header">
+        <div class="container">
+            <div style="color: peachpuff ;" , class="logo">Thomas Machingaidze</div>
+            <nav id="navbar">
+                <ul>
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#about-me">About</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div id="hero" style="width: 100%; height: 0; padding-top: 66.67%; position: relative; overflow: hidden;">
+        <img src="/assets/backdrop.png" alt="Responsive Image"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+    </div>
+
+    <div style="width: 100%; height: 0; padding-top: 66.67%; position: relative; overflow: hidden;">
+        <img src="/assets/backdrop2.png" alt="Responsive Image"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+        <elevenlabs-convai agent-id="tvpm5dXHxjHUGMMflwWw"></elevenlabs-convai>
+        <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+    </div>
+
+
+
+    <section id="about-me"
+        style="min-height: 130vh; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+        <div class="container" style="text-align: center;">
+            <h2 style="margin-bottom: 2rem;">About Me</h2>
+            <div style="display: flex; justify-content: space-between; gap: 2rem; margin: 2rem 0;">
+                <div style="flex: 1; text-align: center;">
+                    <img src="/assets/portrait1.png" alt="Portrait 1"
+                        style="width: 100%; max-height: 400px; object-fit: contain; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                </div>
+
+                <div style="flex: 1; text-align: center;">
+                    <img src="/assets/portrait2.png" alt="Portrait 2"
+                        style="width: 100%; max-height: 400px; object-fit: contain; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                </div>
+
+                <div style="flex: 1; text-align: center;">
+                    <img src="/assets/portrait3.png" alt="Portrait 3"
+                        style="width: 100%; max-height: 400px; object-fit: contain; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-around; align-items: center; margin: 3rem 0;"></div>
+            <div
+                style="max-width: 800px; margin: 0 auto; background-color: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <p style="font-size: 1.2rem; margin-bottom: 2rem; color: var(--text-dark);">
+                    Hi, I’m Thomas Machingaidze—a 17-year-old student at St George’s College in Harare, Zimbabwe. I’m an
+                    aspiring AI engineer and aerospace enthusiast with a passion for exploring how intelligent systems
+                    can shape the future of space travel. <br> When I’m not diving into code or reading about rockets,
+                    you’ll probably find me exploring the ancient world—history is one of my biggest obsessions. I love
+                    bridging the gap between the past and the future, and I’m always up for a good conversation about
+                    AI, space, or ancient civilizations. Also feel free to talk to Jarvis, he's been trained on anything
+                    and everything about me, if you have any questions, he will have your answers
+                    <br> Before diving further into my 3 main fascinations, click the button below to uncover some fun
+                    facts about me!
+                </p>
+
+                <button id="oracleButton" style="
+                    background: var(--accent-primary);
+                    color: var(--text-dark);
+                    padding: 1rem 2rem;
+                    border: none;
+                    border-radius: 50px;
+                    font-family: var(--font-heading);
+                    font-size: 1.2rem;
+                    cursor: pointer;
+                    transition: transform 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                    margin-top: 1rem;">
+                    Consult the Oracle
+                </button>
+
+                <p id="oracleFact" style="
+                    margin-top: 2rem;
+                    font-style: italic;
+                    color: var(--secondary-bg);
+                    opacity: 0;
+                    transition: opacity 0.5s ease;"></p>
+            </div>
+        </div>
+
+        <script>
+            const facts = [
+                // Fact about code comments
+                "My code comments sometimes contain more existential questions than actual explanations.",
+                // Fact about debugging music playlist
+                "I have an entire playlist dedicated solely to \"debugging music.\" Spoiler: it involves a lot of coffee shop ambiance.",
+                // Fact about flight simulator arguments
+                "All my Kerbals in Kerbal Space Program are named after Ancient History figures, Napolean got to visit the moon because of me.",
+                // Fact about irrational tech fear
+                "Yes, I've tried using basic ML to predict load shedding times. Let's just say the model needs *a lot* more training data.",
+                // Fact about wardrobe priorities
+                "My wardrobe might contain slightly more space-themed T-shirts than actual formal shirts. Priorities, right?",
+                // Fact about explaining problems to Mbira
+                "Sometimes I explain complex coding problems to my dog Rocky. He's surprisingly good at just listening without interrupting.",
+                // Fact about browser search history
+                "My browser search history is a wild ride between advanced astrophysics papers and 'how to fix weird Python error message X.'"
+            ];
+
+            const button = document.getElementById('oracleButton');
+            const factDisplay = document.getElementById('oracleFact');
+            let canClick = true;
+
+            button.addEventListener('click', () => {
+                if (!canClick) return;
+                canClick = false;
+
+                button.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    button.style.animation = '';
+                    const randomFact = facts[Math.floor(Math.random() * facts.length)];
+                    factDisplay.textContent = randomFact;
+                    factDisplay.style.opacity = '1';
+                    canClick = true;
+                }, 500);
+            });
+
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    25% { transform: translateX(-10px); }
+                    75% { transform: translateX(10px); }
+                }
+            `;
+            document.head.appendChild(style);
+        </script>
+    </section>
+
+    <section style="height: 145vh; display: flex; align-items: center; flex-direction: row; flex-wrap: wrap;">
+        <div style="width: 50%; padding: clamp(1rem, 3vw, 2rem); flex: 1 1 300px;">
+            <h2 style="color: var(--secondary-bg); font-size: clamp(2rem, 4vw, 3rem); text-align: center;">SPACE</h2>
+            <p style="font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.6; text-align: justify;">
+                My journey into space exploration really took off from playing Kerbal Space Program, which quickly
+                evolved into sketching spaceplane designs and delving into orbital modeling. This passion led me to some
+                incredible opportunities, like receiving a scholarship to the U.S. Space and Rocket Center's Advanced
+                Space Academy. Being immersed in that environment, working with a team to win the Commander's Cup, and
+                personally receiving the 'Right Stuff Award' for leadership and character were truly defining moments. I
+                also graduated from Project PoSSUM, where I got hands-on experience with suborbital science and
+                research. These experiences have cemented my commitment to aerospace.  
+
+                <br>Now, my focus is sharpening. I'm diving deep into the complexities of aerospace engineering,
+                particularly fascinated by the potential of advanced space robotics for in-orbit assembly and
+                maintenance. The challenges of designing robust propulsion systems, maybe even exploring novel concepts
+                beyond conventional chemical rockets, really excites me – optimizing for specific impulse (Isp) and
+                delta-v requirements is a puzzle I love to tackle. Understanding the intricate dance of rocketry, from
+                launch vehicle dynamics to trajectory optimization, feels like unlocking the cheat codes to the
+                universe. It's this intersection of complex physics, cutting-edge engineering, and audacious ambition
+                that truly fuels my passion.
+            </p>
+        </div>
+        <div style="width: 50%; min-height: 50vh; flex: 1 1 300px;">
+            <img src="/assets/Image1.png" alt="Section One Image"
+                style="width: 100%; height: 100%; object-fit: cover; max-height: 90vh;">
+        </div>
+    </section>
+
+    <section style="height: 125vh; display: flex; align-items: center; flex-direction: row; flex-wrap: wrap;">
+        <div style="width: 50%; padding: clamp(1rem, 3vw, 2rem); flex: 1 1 300px; order: 2;">
+            <h2 style="color: var(--secondary-bg); font-size: clamp(2rem, 4vw, 3rem); text-align: center;">AI</h2>
+            <p style="font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.6; text-align: justify;">
+                Honestly, AI just clicks with me. It's more than just coding; it's like this incredible puzzle where
+                you're figuring out how to make computers tackle really tough, meaningful problems. Taking on that
+                AI-powered eye screening device project for ISEF really brought that home. Thinking about how machine
+                learning, probably some form of computer vision, could actually help people get access to eye care in
+                underserved areas – that's the kind of thing that gets me fired up. Getting deep into Python and the
+                different ML tools, actually training models and seeing them start to work, it's just a fascinating
+                process.
+                <br> While my research project involved NLP and tools like GPT APIs, the thrill comes from seeing how
+                these sophisticated algorithms can be applied across different domains. Whether it's optimizing systems,
+                processing complex data streams, or potentially even integrating intelligence into robotics, the core
+                excitement lies in using ML to build smarter, more capable solutions. It’s this potential for broad,
+                meaningful impact through machine learning that truly drives my passion.
+            </p>
+        </div>
+        <div style="width: 50%; min-height: 50vh; flex: 1 1 300px; order: 2;">
+            <img src="/assets/Image2.png" alt="Section Two Image"
+                style="width: 100%; height: 100%; object-fit: cover; max-height: 90vh;">
+        </div>
+    </section>
+
+    <section style="height: 125vh; display: flex; align-items: center; flex-direction: row; flex-wrap: wrap;">
+        <div style="width: 50%; padding: clamp(1rem, 3vw, 2rem); flex: 1 1 300px;">
+            <h2 style="color: var(--secondary-bg); font-size: clamp(2rem, 4vw, 3rem); text-align: center;">HISTORY</h2>
+            <p style="font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.6; text-align: justify;">
+                While my head is often in the clouds thinking about space or deep in code exploring AI, I also have this
+                quiet fascination with the sheer depth of human history, especially the ancient world. If I were to
+                really delve into it, I'd probably find myself completely lost in the grandeur and complexity of empires
+                like Persia and Babylon. Imagine those massive cities, the incredible feats of engineering like the
+                Hanging Gardens, and the sheer scale of cultures that thrived thousands of years ago. The Persian
+                Empire, with its intricate network of roads, its powerful rulers like Cyrus the Great, and its synthesis
+                of so many different traditions – it's just mind-blowing.
+                <br>And Babylon, a center of learning, innovation, and architectural wonder... I can easily picture
+                myself spending hours reading about their advancements in mathematics, astronomy, and law. It's not just
+                about the battles and conquests; it's about understanding how these civilizations shaped the course of
+                human history and left behind legacies that still resonate today. The more you learn, the more you
+                realize how much there is to discover, and that's what makes it so incredibly fascinating.
+            </p>
+        </div>
+        <div style="width: 50%; min-height: 50vh; flex: 1 1 300px;">
+            <img src="/assets/Image3.png" alt="Section Three Image"
+                style="width: 100%; height: 100%; object-fit: cover; max-height: 90vh;">
+        </div>
+    </section>
+
+
+
+    <section id="skills" class="scroll-animate" data-stagger-children="true">
+        <div class="container">
+            <h2>Core Skills</h2>
+            <div class="skills-grid visible">
+                <div class="skill-item" style="--animation-order: 0;">
+                    <h3>AI, Machine Learning & Software Development</h3>
+                    <p>Advanced development skills in Python and Swift. Experienced in applying AI/ML (NLP, LLMs, OCR)
+                        to build applications and solve real-world problems, demonstrated through projects like an AI
+                        educational tool and an AI diagnostic device I've created. Proficient with relevant ML tools and
+                        APIs.</p>
+                </div>
+                <div class="skill-item" style="--animation-order: 1;">
+                    <h3>Aerospace Engineering & Exploration</h3>
+                    <p> Deep passion for space, backed by practical experience from U.S. Space & Rocket Center's
+                        Advanced Space Academy (Scholarship, Commander's Cup, 'Right Stuff Award') and Project PoSSUM
+                        suborbital training.</p>
+                </div>
+                <div class="skill-item" style="--animation-order: 2;">
+                    <h3>Research & Innovation</h3>
+                    <p>Proven ability to lead research and drive innovation, evidenced by an independent AI research
+                        project and developing award-winning solutions (ISEF Finalist, RICOH Sustainability Award, Joe
+                        Muziki Award).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="scroll-animate" data-stagger-children="true">
+        <div class="container">
+            <h2>Featured Projects</h2>
+            <div class="portfolio-grid visible">
+                <div class="portfolio-item" style="--animation-order: 0;">
+                    <img src="https://res.cloudinary.com/projectboard/image/fetch/c_fill,h_500,q_80,w_625/https://firebasestorage.googleapis.com/v0/b/project-leo-mvp.appspot.com/o/projects%252F192302%3Falt%3Dmedia%26token%3D25f3caaf-c523-42ad-91d4-c2ab162d8e67"
+                        alt="Project 1">
+                    <div class="portfolio-content">
+                        <h3>AI-Powered Pediatric Eye Screening Device</h3>
+                        <p>My project for the International Science and Engineering Fair: An AI-powered, portable eye
+                            screening device that enables early detection of pediatric eye diseases in underserved rural
+                            clinics.</p>
+                        <a href="https://isef.net/project/enbm011-ai-powered-pediatric-eye-screening-device"
+                            target="_blank" rel="noopener noreferrer" class="button-link">View Project</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="blog" class="scroll-animate animate-fade-in"
+        style="height: 50vh; display: flex; align-items: center; justify-content: center; background-color: var(--primary-bg);">
+        <div class="container" style="text-align: center;">
+            <h2 style="color: var(--secondary-bg); animation: fadeInSlideUp 1s ease-in-out;">
+                My Blog
+            </h2>
+            <p style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 2rem;">
+                Explore my thoughts, tutorials, and insights on technology, AI, and more.
+            </p>
+            <a href="blog.html" class="myth-button" style="text-decoration: none;">
+                Visit Blog
+            </a>
+        </div>
+    </section>
+
+    <style>
+        @keyframes fadeInSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <section id="contact" class="scroll-animate animate-zoom-in">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <div class="contact-content">
+                <p>Interested in collaborating or have a question? Feel free to reach out.</p>
+                <div class="contact-details">
+                    <p><strong>Email:</strong> <a
+                            href="mailto:Thomasmachingaidze07@gmail.com">Thomasmachingaidze07@gmail.com</a></p>
+                    <p><strong>Location:</strong> Harare, Zimbabwe</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/thomas-machingaidze-b7362a28b/" target="_blank"
+                        rel="noopener noreferrer" title="LinkedIn"> <svg viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zm-5 6h-3v7h3v-7zm-5 0H6v7h3v-7zm8-2h-3a1 1 0 0 0-1 1v8h3v-4.5c0-1.5 1.5-1.5 1.5-1.5s1.5 0 1.5 1.5V16h3v-4a3 3 0 0 0-3-3zm-6-1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                        </svg> </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Thomas Machingaidze. All Rights Reserved.</p>
+            <p>Harare, Zimbabwe</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Dynamic Year ---
+            const currentYearSpan = document.getElementById('current-year');
+            if (currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
+
+            // --- Active Nav Link Highlighting (Intersection Observer based) ---
+            const navLinks = document.querySelectorAll('#navbar a');
+            const sectionsForNav = document.querySelectorAll('section[id]'); // Only sections with IDs
+
+            const navObserverOptions = {
+                root: null, // relative to viewport
+                rootMargin: '0px',
+                threshold: 0.5 // Trigger when 50% of the section is visible
+            };
+
+            const navObserverCallback = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            };
+
+            const navObserver = new IntersectionObserver(navObserverCallback, navObserverOptions);
+            sectionsForNav.forEach(section => navObserver.observe(section));
+
+            // --- Intersection Observer for Content Fade-in Animations ---
+            const animateObserverOptions = { threshold: 0.1 }; // Trigger early
+            const animateObserverCallback = (entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+
+                        // Stagger children if specified (using the CSS variable method)
+                        if (entry.target.dataset.staggerChildren === "true") {
+                            const children = entry.target.querySelectorAll('.skill-item, .portfolio-item');
+                            children.forEach((child, childIndex) => {
+                                child.style.setProperty('--animation-order', childIndex);
+                            });
+                            // Add visible class to the grid itself to trigger child animation
+                            const grid = entry.target.querySelector('.skills-grid, .portfolio-grid');
+                            if (grid) grid.classList.add('visible');
+                        }
+
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            };
+            const animateObserver = new IntersectionObserver(animateObserverCallback, animateObserverOptions);
+            document.querySelectorAll('.scroll-animate').forEach(el => {
+                animateObserver.observe(el);
+            });
+
+
+            // --- Hero Subtitle Typewriter ---
+            const subtitleElement = document.getElementById('hero-subtitle');
+            const cursorSpan = subtitleElement ? subtitleElement.querySelector('.cursor') : null;
+            function typeWriter() {
+                if (!subtitleElement || !cursorSpan) return;
+                // UPDATE: Text from hero section
+                const originalText = "Aspiring AI Engineer / Aerospace Enthusiast ";
+                const textNode = document.createTextNode(""); // Create a text node for the typewriter text
+                subtitleElement.insertBefore(textNode, cursorSpan); // Insert text node before cursor
+                let charIndex = 0;
+
+                function type() {
+                    if (charIndex < originalText.length) {
+                        textNode.nodeValue += originalText.charAt(charIndex); // Append character to text node
+                        charIndex++;
+                        setTimeout(type, 90); // Slightly faster typing
+                    } else {
+                        cursorSpan.classList.remove('typing');
+                        // Optional: Restart after a pause
+                        // setTimeout(() => {
+                        //   textNode.nodeValue = ""; // Clear text node
+                        //   typeWriter();
+                        // }, 5000);
+                    }
+                }
+                cursorSpan.classList.add('typing');
+                setTimeout(type, 500); // Initial delay
+            }
+            // Only run typewriter if the element exists
+            if (subtitleElement) {
+                typeWriter();
+            }
+
+
+            // --- About Section Artifact Interaction ---
+            const artifacts = document.querySelectorAll('.artifact');
+            artifacts.forEach(artifact => {
+                artifact.addEventListener('click', () => {
+                    // Optional: Close other artifacts when one is opened
+                    // artifacts.forEach(other => { if (other !== artifact) other.classList.remove('active'); });
+                    artifact.classList.toggle('active')
+                });
+                // Close when clicking outside
+                document.addEventListener('click', (event) => {
+                    if (!artifact.contains(event.target)) {
+                        artifact.classList.remove('active');
+                    }
+                });
+            });
+
+            // --- Removed Myth Modal Interaction ---
+
+        }); // End DOMContentLoaded
+    </script>
+
+</body>
+
+</html>

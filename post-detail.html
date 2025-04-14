@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Detail - Thomas Machingaidze</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Forum&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* --- THEME VARIABLES (Greek Theme ONLY) --- */
+        :root {
+            /* (Same as blog.html) */
+            --primary-bg: #F8F4E3;
+            --secondary-bg: #396870;
+            --accent-1: #C1A073;
+            --accent-2: #947d34;
+            --text-dark: #1A1A1A;
+            --text-light: #F8F4E3;
+            --text-heading-color: var(--secondary-bg);
+            --text-body-color: var(--text-dark);
+            --text-link-color: var(--accent-2);
+            --text-link-hover: var(--accent-1);
+            --border-color: rgba(44, 44, 44, 0.2);
+            --border-accent: var(--accent-1);
+            --font-heading: 'Cinzel Decorative', cursive;
+            --font-body: 'Forum', cursive;
+            --border-radius: 8px;
+        }
+
+        /* --- Global & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            background-color: var(--primary-bg);
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-body-color);
+            line-height: 1.8;
+            /* Slightly more spacing for reading */
+            background-color: var(--primary-bg);
+            padding-bottom: 4rem;
+            /* Space at bottom */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--font-heading);
+            color: var(--text-heading-color);
+            margin-bottom: 1.5rem;
+            font-weight: normal;
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-heading-color);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--accent-2);
+            margin-top: 2rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        a {
+            color: var(--text-link-color);
+            text-decoration: underline;
+        }
+
+        a:hover {
+            color: var(--text-link-hover);
+            text-decoration: none;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--accent-1);
+            margin: 1.5rem 0 1.5rem 2rem;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #555;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--border-color), transparent);
+            margin: 3rem 0;
+        }
+
+        /* --- Blog Header --- (Same as blog.html) */
+        .blog-header {
+            background: var(--secondary-bg);
+            color: var(--text-light);
+            padding: 0.5rem 0;
+            border-bottom: 3px solid var(--border-accent);
+        }
+
+        .blog-header .container {
+            max-width: 1100px;
+            /* Wider container for header */
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .blog-header .header-title {
+            /* Use class instead of h1 */
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            padding: 0;
+            margin: 0;
+            color: var(--accent-1);
+        }
+
+        .blog-header a.back-link {
+            color: var(--text-light);
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            border: 1px solid var(--accent-1);
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            transition: background-color 0.3s, color 0.3s;
+            text-decoration: none;
+        }
+
+        .blog-header a.back-link:hover {
+            background-color: var(--accent-1);
+            color: var(--secondary-bg);
+        }
+
+        /* --- Post Detail Area --- */
+        #post-hero {
+            /* Dynamic Header without Parallax */
+            height: 40vh;
+            /* Adjust height */
+            background-size: cover;
+            background-position: center center;
+            margin-bottom: 3rem;
+            position: relative;
+            border-bottom: 5px solid var(--border-accent);
+        }
+
+        #post-hero::after {
+            /* Dark overlay */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5));
+        }
+
+        #post-meta {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        #post-meta .date {
+            font-style: italic;
+        }
+
+        #post-meta .author {
+            /* Add if needed */
+        }
+
+        #post-content-area {
+            background: var(--primary-bg);
+            /* Ensure background */
+            padding: 1rem 0;
+            /* Padding around content */
+        }
+
+        .full-post-content {
+            display: none;
+            /* Hidden by default, shown by JS */
+        }
+
+        /* Unique Feature: Drop Cap */
+        .full-post-content p:first-of-type::first-letter {
+            float: left;
+            font-family: var(--font-heading);
+            font-size: 4em;
+            /* Adjust size */
+            line-height: 0.8;
+            padding-right: 0.15em;
+            padding-bottom: 0.05em;
+            color: var(--accent-2);
+            margin-top: 0.1em;
+        }
+
+        /* Unique Feature: Footnotes Placeholder Styling */
+        .footnote {
+            cursor: help;
+            text-decoration: underline dotted var(--accent-1);
+            position: relative;
+        }
+
+        .footnote .footnote-text {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            /* Position above */
+            background-color: var(--secondary-bg);
+            color: var(--text-light);
+            padding: 10px;
+            border-radius: var(--border-radius);
+            font-size: 0.85rem;
+            line-height: 1.4;
+            width: 250px;
+            text-align: left;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            /* Remove underline */
+        }
+
+        .footnote:hover .footnote-text {
+            display: block;
+        }
+
+        /* Unique Feature: Related Posts Placeholder */
+        #related-posts {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        #related-posts h3 {
+            text-align: center;
+            color: var(--secondary-bg);
+            margin-bottom: 2rem;
+            font-family: var(--font-body);
+            /* Use body font for this heading */
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        #related-posts ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        #related-posts li a {
+            display: block;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: background-color 0.3s, border-color 0.3s;
+            text-decoration: none;
+        }
+
+        #related-posts li a:hover {
+            background-color: #fff;
+            border-color: var(--accent-2);
+        }
+
+        #not-found {
+            /* Style for error message */
+            text-align: center;
+            padding: 4rem 0;
+            color: var(--accent-2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="blog-header">
+        <div class="container">
+            <span class="header-title">Scroll Detail</span>
+            <a href="blog.html" class="back-link">&laquo; Back to Scrolls</a>
+        </div>
+    </header>
+
+    <div id="post-hero" style="background-image: url('/assets/backdrop3.png');">
+    </div>
+
+    <div class="container">
+
+        <div id="post-meta">
+            <span class="date">Loading Date...</span> | <span class="author">By Thomas Machingaidze</span>
+        </div>
+
+        <main id="post-content-area">
+
+            <div class="full-post-content" id="agi-race"
+                data-title="The AGI Sprint: Are We Racing Towards Utopia or Oblivion?" data-date="April 14, 2025"
+                data-image="/assets/agi-backdrop.png">
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <div class="audio-button" onclick="toggleAudio()"
+                        style="background-image: url('/assets/agi-jarvis.png')">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="white" d="M8 5v14l11-7z" />
+                        </svg>
+                        <audio id="postAudio" src="/assets/agi-intro.mp3"></audio>
+                    </div>
+                </div>
+
+                <style>
+                    .audio-button {
+                        width: 60px;
+                        height: 60px;
+                        border-radius: 50%;
+                        background-size: cover;
+                        background-position: center;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        position: relative;
+                        margin: 1rem 0;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                    }
+
+                    .audio-button::before {
+                        content: '';
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                        background: rgba(0, 0, 0, 0.4);
+                    }
+
+                    .audio-button svg {
+                        position: relative;
+                        z-index: 1;
+                        transition: transform 0.2s;
+                    }
+
+                    .audio-button:hover svg {
+                        transform: scale(1.1);
+                    }
+                </style>
+
+                <script>
+                    function toggleAudio() {
+                        const audio = document.getElementById('postAudio');
+                        if (audio.paused) {
+                            audio.play();
+                        } else {
+                            audio.pause();
+                        }
+                    }
+                </script>
+                <h1>The AGI Sprint: Are We Racing Towards Utopia or Oblivion?</h1>
+
+                <p>Wow, okay, let's talk about AI. It feels like you can't scroll social media, read the news, or even
+                    have a coffee without someone mentioning the latest AI breakthrough. It's genuinely exciting,
+                    sometimes a little scary, and definitely moving at lightning speed. But often, what people are
+                    talking about is what we call <span class="footnote">ANI<span class="footnote-text">Artificial
+                            Narrow Intelligence: AI systems designed and trained for a specific task, like playing
+                            chess, translating languages, or generating images. They excel in their domain but lack
+                            general cognitive abilities.</span></span> – AI that's really good at <b>one</b> thing. The
+                    bigger, much more complex goal that has tech giants and researchers buzzing is AGI, or Artificial
+                    General Intelligence.</p>
+
+                <p>So, what <b>is</b> AGI? Think of it as AI with human-level cognitive abilities across a wide range of
+                    tasks. An AGI wouldn't just write a poem; it could potentially understand the emotion behind it,
+                    learn to cook a new dish from watching a video, devise a complex scientific theory, or even navigate
+                    the messy, unpredictable real world just like us. It's the kind of AI you see in science fiction –
+                    adaptable, creative, and capable of genuine learning and problem-solving in unfamiliar situations.
+                    And right now, there's an undeniable, high-stakes <i>race</i> to build it.</p>
+                <h2>Who's Running and What's the Fuel?</h2>
+
+                <p>This isn't just a casual jog; it's a full-blown sprint involving some of the biggest names in tech –
+                    Google DeepMind, OpenAI, Meta AI, Anthropic – alongside ambitious startups and even nation-states.
+                    Why the rush? The potential rewards are astronomical: solving currently intractable problems in
+                    medicine and climate science, revolutionizing industries, and fundamentally changing human
+                    existence. Of course, there's also immense economic and strategic power potentially up for grabs.
+                </p>
+
+                <p>What's fueling this race? Three key ingredients:</p>
+                <ul>
+                    <li><strong>Data:</strong> Mind-boggling amounts of it. Text, images, code, video – the digital
+                        exhaust of humanity is being hoovered up to train these models.</li>
+                    <li><strong>Compute:</strong> Unprecedented processing power, primarily through specialized chips
+                        like <span class="footnote">GPUs<span class="footnote-text">Graphics Processing Units:
+                                Originally designed for rendering graphics, these chips excel at parallel processing,
+                                making them ideal for the massive calculations needed in deep learning. TPUs (Tensor
+                                Processing Units) are Google's custom-designed alternative.</span></span>. Building
+                        cutting-edge models requires vast, energy-hungry data centers.</li>
+                    <li><strong>Algorithms:</strong> Clever techniques to learn from the data. The <span
+                            class="footnote">Transformer<span class="footnote-text">Transformer Architecture: A type of
+                                neural network model introduced in 2017, particularly effective at handling sequential
+                                data like language. It relies heavily on 'attention mechanisms' to weigh the importance
+                                of different input parts, enabling models like ChatGPT.</span></span> architecture has
+                        been a game-changer, especially for language.</li>
+                </ul>
+
+                <h2>How Close Are We, Really?</h2>
+
+                <p>This is the million-dollar (or maybe trillion-dollar) question. We've seen incredible progress with
+                    <span class="footnote">LLMs<span class="footnote-text">Large Language Models: AI models trained on
+                            vast amounts of text data to understand and generate human-like language. Examples include
+                            GPT-4, Gemini, Claude, and Llama models.</span></span> like ChatGPT, Gemini, Claude and
+                    others. They can write coherent text, generate code, create images, and even hold surprisingly
+                    nuanced conversations. Their abilities often seem <b>emergent</b> – capabilities appearing at large
+                    scale that weren't explicitly programmed in. It feels... close, sometimes.</p>
+
+                <p>But, and it's a big 'but', mimicking intelligence isn't the same as possessing it. Current models are
+                    amazing pattern recognizers and predictors, but they often lack true common sense, robust reasoning,
+                    long-term planning capabilities, and a real understanding of the physical world. Ask them a question
+                    slightly outside their training data's patterns, and they can still falter or "hallucinate"
+                    incorrect information convincingly. Personally, I think we've cracked a major component – perhaps
+                    related to language processing and pattern matching in the brain – but we're likely still missing
+                    fundamental pieces for true, adaptable general intelligence.</p>
+
+                <h2>The Hurdles Aren't Just Technical</h2>
+
+                <p>Beyond the sheer technical challenge of creating AGI, there are massive hurdles. Chief among them is
+                    the <span class="footnote">Alignment Problem<span class="footnote-text">AI Alignment Problem: The
+                            challenge of ensuring that advanced AI systems have goals and behaviors that align with
+                            human values and intentions, especially as they become more autonomous and capable. How do
+                            we make sure AGI wants what's good for us?</span></span>. How do we ensure that a
+                    superintelligent entity understands and shares human values? How do we specify goals robustly enough
+                    that the AI doesn't find harmful loopholes to achieve them? This isn't just a technical problem;
+                    it's deeply philosophical and ethical.</p>
+
+                <p>Then there are the societal implications: potential job displacement, the concentration of power, the
+                    risk of misuse (autonomous weapons, mass disinformation), and the profound ethical questions about
+                    consciousness and rights if we <b>do</b> succeed. It's heavy stuff, and honestly, it keeps me up at
+                    night sometimes.</p>
+
+                <blockquote>"The first ultraintelligent machine is the last invention that man need ever make, provided
+                    that the machine is docile enough to tell us how to keep it under control." - I. J. Good (1965)
+                </blockquote>
+
+                <p>That quote feels more relevant than ever. The race isn't just about <i>if</i> we can build AGI, but
+                    <b>how</b> we do it responsibly.</p>
+                <h2>My Two Cents: Excitement Tinged with Trepidation</h2>
+
+                <p>As someone fascinated by technology and its potential, I can't help but feel a thrill watching this
+                    unfold. The pace of innovation is staggering. The possibility of using AI to cure diseases, solve
+                    climate change, or unlock new scientific frontiers is genuinely inspiring. It feels like being alive
+                    during a pivotal moment in history.</p>
+
+                <p>However, I also feel a deep sense of caution. The "move fast and break things" mantra feels
+                    incredibly risky when the 'thing' we might break is societal stability or even human control over
+                    our future. The discussions around safety, ethics, and alignment need to keep pace with capability
+                    development, and frankly, I worry they aren't. We need more open discussion, more collaboration on
+                    safety research, and thoughtful governance – not just a blind race to the finish line, driven by
+                    competition.</p>
+
+                <p>Ultimately, the race to AGI is on, whether we like it or not. The destination is hazy – it could be
+                    an unprecedented era of flourishing or something much darker. What matters now is how we navigate
+                    the journey. It requires not just brilliant engineers and scientists, but also ethicists,
+                    philosophers, policymakers, and an engaged public, all working to steer this incredible technology
+                    towards a future that benefits all of humanity. It's a race we need to run with wisdom, not just
+                    speed.</p>
+            </div>
+
+            <div id="not-found" style="display: none;">
+                <h2>Scroll Not Found</h2>
+                <p>Apologies, the requested scroll could not be located in the archives.</p>
+                <p><a href="blog.html">Return to the Scrolls &raquo;</a></p>
+            </div>
+
+        </main>
+
+        <section id="related-posts" style="display: none;">
+            <hr>
+            <h3>Explore Other Scrolls:</h3>
+            <ul id="related-links-list">
+            </ul>
+        </section>
+
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const postContentArea = document.getElementById('post-content-area');
+            const postMetaDate = document.querySelector('#post-meta .date');
+            const postHero = document.getElementById('post-hero');
+            const mainTitle = document.querySelector('title'); // Get the main title element
+            const headerTitle = document.querySelector('.blog-header .header-title'); // Get header title span
+            const allPostDivs = document.querySelectorAll('.full-post-content');
+            const notFoundDiv = document.getElementById('not-found');
+            const relatedPostsSection = document.getElementById('related-posts');
+            const relatedLinksList = document.getElementById('related-links-list');
+
+
+            // Get post slug from URL query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const postSlug = urlParams.get('post');
+
+            let postFound = false;
+
+            if (postSlug && postContentArea && notFoundDiv) {
+                const targetPost = document.getElementById(postSlug);
+
+                if (targetPost) {
+                    // Hide all posts first
+                    allPostDivs.forEach(div => div.style.display = 'none');
+
+                    // Show the target post
+                    targetPost.style.display = 'block';
+                    postFound = true;
+
+                    // Update meta information, title, and hero image
+                    const title = targetPost.dataset.title || "Scroll Detail";
+                    const date = targetPost.dataset.date || "Unknown Date";
+                    const image = targetPost.dataset.image || 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=1350&q=80'; // Default image
+
+                    if (postMetaDate) postMetaDate.textContent = date;
+                    if (postHero) postHero.style.backgroundImage = `url('${image}')`;
+                    if (mainTitle) mainTitle.textContent = `${title} - Thomas Machingaidze`;
+                    if (headerTitle) headerTitle.textContent = title; // Update header title too
+
+                    // Populate Related Posts (excluding current one)
+                    if (relatedPostsSection && relatedLinksList) {
+                        relatedLinksList.innerHTML = ''; // Clear existing
+                        let relatedCount = 0;
+                        allPostDivs.forEach(div => {
+                            if (div.id !== postSlug && relatedCount < 3) { // Show max 3 related
+                                const relatedSlug = div.id;
+                                const relatedTitle = div.dataset.title || "Related Scroll";
+                                const li = document.createElement('li');
+                                const a = document.createElement('a');
+                                a.href = `post-detail.html?post=${relatedSlug}`;
+                                a.textContent = relatedTitle;
+                                li.appendChild(a);
+                                relatedLinksList.appendChild(li);
+                                relatedCount++;
+                            }
+                        });
+                        if (relatedCount > 0) {
+                            relatedPostsSection.style.display = 'block'; // Show section if links were added
+                        }
+                    }
+
+
+                }
+            }
+
+            // If no slug provided or post not found, show error
+            if (!postFound) {
+                allPostDivs.forEach(div => div.style.display = 'none'); // Hide all posts
+                if (notFoundDiv) notFoundDiv.style.display = 'block';
+                if (mainTitle) mainTitle.textContent = `Post Not Found - Thomas Machingaidze`;
+                if (headerTitle) headerTitle.textContent = "Scroll Not Found";
+            }
+        });
+    </script>
+
+</body>
+
+</html>
